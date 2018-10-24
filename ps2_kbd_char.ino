@@ -1,13 +1,14 @@
 /*Written By: Er. Dapinder Singh Virk
   Email ID: brillosolutions@gmail.com
-  Version: 1.0.1
-  Date: October 20, 2018
-  Outputs: Displays key alphabets and numerics on serial terminal.*/
+  Version: 1.0.2
+  Date: October 23, 2018
+  Outputs: Displays key press in form of BIN, HEX and CHAR on serial terminal.*/
 
 #define clkLine 3
 #define dataLine 4
 uint8_t kbdBits[33], i = 0;
 boolean capsLock = false;
+boolean numLock = true;
 
 void setup() 
 {
@@ -24,10 +25,6 @@ void loop()
   if (i == 33)
   {
     i = 0;
-    Serial.print("BIN: ");
-    for (int j = 0; j <= 32; j++)
-      Serial.print(kbdBits[j]);
-    Serial.print("\nHEX: ");
     uint8_t uprLimit = 8, lwrLimit = 1, kbdByte = 0;
     for (int j = 0; j <= 2; j++)
     {
@@ -41,6 +38,10 @@ void loop()
         else
           kbdByte <<= 1;
       }
+      Serial.print("BIN: ");
+      for (int j = 0; j <= 32; j++)
+        Serial.print(kbdBits[j]);
+      Serial.print("\nHEX: ");
       Serial.print(kbdByte, HEX);
       Serial.print("\nCHAR: ");
       if (mapKey(kbdByte))
@@ -59,61 +60,91 @@ boolean mapKey(uint8_t keyCode)
     /**Matrix numeric keypad codes: (0 - 9)**/
     case 0x70:
     {
-      Serial.print("0");
+      if (numLock)
+        Serial.print("0");
+      else
+        Serial.print("ENABLE NUM LOCK TO SEE NUMBER");
       isFound = true;
       break;
     }
     case 0x69:
     {
-      Serial.print("1");
+      if (numLock)
+        Serial.print("1");
+      else
+        Serial.print("ENABLE NUM LOCK TO SEE NUMBER");
       isFound = true;
       break;
     }
     case 0x72:
     {
-      Serial.print("2");
+      if (numLock)
+        Serial.print("2");
+      else
+        Serial.print("ENABLE NUM LOCK TO SEE NUMBER");
       isFound = true;
       break;
     }
     case 0x7A:
     {
-      Serial.print("3");
+      if (numLock)
+        Serial.print("3");
+      else
+        Serial.print("ENABLE NUM LOCK TO SEE NUMBER");
       isFound = true;
       break;
     }
     case 0x6B:
     {
-      Serial.print("4");
+      if (numLock)
+        Serial.print("4");
+      else
+        Serial.print("ENABLE NUM LOCK TO SEE NUMBER");
       isFound = true;
       break;
     }
     case 0x73:
     {
-      Serial.print("5");
+      if (numLock)
+        Serial.print("5");
+      else
+        Serial.print("ENABLE NUM LOCK TO SEE NUMBER");
       isFound = true;
       break;
     }
     case 0x74:
     {
-      Serial.print("6");
+      if (numLock)
+        Serial.print("6");
+      else
+        Serial.print("ENABLE NUM LOCK TO SEE NUMBER");
       isFound = true;
       break;
     }
     case 0x6C:
     {
-      Serial.print("7");
+      if (numLock)
+        Serial.print("7");
+      else
+        Serial.print("ENABLE NUM LOCK TO SEE NUMBER");
       isFound = true;
       break;
     }
     case 0x75:
     {
-      Serial.print("8");
+      if (numLock)
+        Serial.print("8");
+      else
+        Serial.print("ENABLE NUM LOCK TO SEE NUMBER");
       isFound = true;
       break;
     }
     case 0x7D:
     {
-      Serial.print("9");
+      if (numLock)
+        Serial.print("9");
+      else
+        Serial.print("ENABLE NUM LOCK TO SEE NUMBER");
       isFound = true;
       break;
     }
@@ -243,13 +274,37 @@ boolean mapKey(uint8_t keyCode)
     case 0x58:
     {
       if (capsLock)
+      {
+        Serial.print("CAPS LOCK DISABLED");
         capsLock =false;
+      }
       else
+      {
+        Serial.print("CAPS LOCK ENABLED");
         capsLock = true;
+      }
       isFound = true;
       break;
     }
     /**Caps Lock key**/
+
+    /**Num Lock key**/
+    case 0x77:
+    {
+      if (numLock)
+      {
+        Serial.print("NUM LOCK DISABLED");
+        numLock =false;
+      }
+      else
+      {
+        Serial.print("NUM LOCK ENABLED");
+        numLock = true;
+      }
+      isFound = true;
+      break;
+    }
+    /**Num Lock key**/
     
     /**Alphabetic keys**/
     case 0x15:
